@@ -23,9 +23,14 @@ object Launcher {
       println(s"Input $param")
       val inputMatrix = DenseMatrix[List[Int], Int](input: _*)
       val outputMatrix: DenseMatrix[Int] = inputMatrix *:* param
-      Files.write(Paths.get(args(2)), outputMatrix.toString().getBytes(StandardCharsets.UTF_8))
+      println(printMatrix(outputMatrix))
+      Files.write(Paths.get(args(2)), printMatrix(outputMatrix).getBytes(StandardCharsets.UTF_8))
     } catch{
       case e: Exception => Files.write(Paths.get(args(2)), "Invalid input matrix.".getBytes(StandardCharsets.UTF_8))
     }
+  }
+
+  def printMatrix(m:DenseMatrix[_]) = {
+      m.toString().replace("  ", " ")
   }
 }
