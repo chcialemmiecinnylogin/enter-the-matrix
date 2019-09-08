@@ -3,6 +3,8 @@ import java.nio.charset.StandardCharsets
 import java.nio.file.{Files, Paths}
 
 import breeze.linalg.DenseMatrix
+import breeze.linalg._
+import breeze.numerics._
 
 import scala.io.Source
 
@@ -15,14 +17,11 @@ object Launcher {
 
   def main(args: Array[String]): Unit = {
     try {
-      val inputLines = Source.fromFile(new File(args(0))).getLines().toList
-      val input = inputLines.map(_.split(' ').map(_.toInt).toList)
-      val param = Source.fromFile(new File(args(1))).getLines().mkString.toInt
-      checkInput(input)
+      val input = loadMatrix(args(0))
+      val param = loadMatrix(args(1))
       println(s"Input $input")
       println(s"Input $param")
-      val inputMatrix = DenseMatrix[List[Int], Int](input: _*)
-      val outputMatrix: DenseMatrix[Int] = inputMatrix *:* param
+      val outputMatrix: DenseMatrix[Int] = input * param
       println(printMatrix(outputMatrix))
       Files.write(Paths.get(args(2)), printMatrix(outputMatrix).getBytes(StandardCharsets.UTF_8))
     } catch{
@@ -30,7 +29,14 @@ object Launcher {
     }
   }
 
+  private def loadMatrix(filename:String) = {
+    val inputLines = Source.fromFile(new File(filename)).getLines().toList
+    val input = inputLines.map(_.split(' ').map(_.toInt).toList)
+    checkInput(input)
+    DenseMatrix[List[Int], Int](input: _*)
+  }
+
   def printMatrix(m:DenseMatrix[_]) = {
-      m.toString().replace("  ", " ")
+      m.toString().replaceAll("( )+", " ").lines.map(_.trim).mkString("\n")
   }
 }
