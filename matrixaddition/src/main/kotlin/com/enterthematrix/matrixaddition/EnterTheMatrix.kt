@@ -4,10 +4,9 @@ import java.io.File
 
 fun main(args: Array<String>) {
     try {
-        val first = parseMatrix(File(args[0])).also { validateMatrix(it) }
-        val scalar = File(args[1]).readText().let { Integer.parseInt(it) }
-        val addition = matrixMultiplicationByScalar(first, scalar)
-        writeMatrix(addition, File(args[2]))
+        val matrix = parseMatrix(File(args[0])).also { validateMatrix(it) }
+        val rotated = matrixRotation(matrix)
+        writeMatrix(rotated, File(args[2]))
     } catch (e: EnterTheMatrixException) {
         File(args[2]).writeText(e.message)
     }
@@ -35,6 +34,10 @@ fun addMatrix(first: List<List<Int>>, second: List<List<Int>>): List<List<Int>> 
         throw InvalidMatrixSizes()
     }
     return first.zip(second).map { addRows(it.first, it.second) }
+}
+
+fun matrixRotation(matrix: List<List<Int>>): List<List<Int>> {
+    return (matrix.first().indices).map { i -> matrix.reversed().map { row -> row[i] } }
 }
 
 fun addRows(first: List<Int>, second: List<Int>): List<Int> {
