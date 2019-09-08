@@ -5,8 +5,8 @@ import java.io.File
 fun main(args: Array<String>) {
     try {
         val first = parseMatrix(File(args[0])).also { validateMatrix(it) }
-        val second = parseMatrix(File(args[1])).also { validateMatrix(it) }
-        val addition = addMatrix(first, second)
+        val scalar = File(args[1]).readText().let { Integer.parseInt(it) }
+        val addition = matrixMultiplicationByScalar(first, scalar)
         writeMatrix(addition, File(args[2]))
     } catch (e: EnterTheMatrixException) {
         File(args[2]).writeText(e.message)
@@ -21,6 +21,10 @@ fun validateMatrix(matrix: List<List<Int>>) {
     if (matrix.map { it.size }.distinct().size != 1) {
         throw InvalidInputMatrix()
     }
+}
+
+fun matrixMultiplicationByScalar(first: List<List<Int>>, scalar: Int): List<List<Int>> {
+    return first.map { row -> row.map { it * scalar } }
 }
 
 fun addMatrix(first: List<List<Int>>, second: List<List<Int>>): List<List<Int>> {
