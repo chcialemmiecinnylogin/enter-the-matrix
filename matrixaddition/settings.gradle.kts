@@ -12,4 +12,4 @@ pluginManagement {
 		}
 	}
 }
-rootProject.name = "matrixaddition"
+rootProject.name = "enterthematrix"
