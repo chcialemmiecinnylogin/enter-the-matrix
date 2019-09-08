@@ -1,0 +1,2 @@
+Transponowanie macierzy zaimplementowane jak przedstawiono tu:
+https://en.wikipedia.org/wiki/Transpose
